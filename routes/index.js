@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var nodePandoc = require('node-pandoc');
 var fs = require('fs');
-var mime =require('mime')
 var args, callback;
 
 /* GET home page. */
