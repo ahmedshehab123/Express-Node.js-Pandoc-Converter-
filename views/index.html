@@ -69,33 +69,33 @@
     </style>
     <script>
         $(document).ready(function () {
-            var from='';
-            var to='';
-            var text='';
+            var from = '';
+            var to = '';
+            var text = '';
             $('#from').on('change', function () {
-                from=this.value;
-                if(to !=='' && text !==''){
-                    var params={from:from,to:to,text:text}
-                    $.post("/pandoc",params, function(data, status){
+                from = this.value;
+                if (to !== '' && text !== '') {
+                    var params = {from: from, to: to, text: text}
+                    $.post("/pandoc", params, function (data, status) {
                         $('#results').text(data);
                     });
                 }
             });
             $('#to').on('change', function () {
-                to=this.value;
-                if(from !=='' && text !==''){
-                    var params={from:from,to:to,text:text}
-                    $.post("/pandoc",params, function(data, status){
+                to = this.value;
+                if (from !== '' && text !== '') {
+                    var params = {from: from, to: to, text: text}
+                    $.post("/pandoc", params, function (data, status) {
                         $('#results').text(data);
                     });
                 }
             });
 
             $('#text').on('change', function () {
-                text=this.value;
-                if(to !=='' && from !==''){
-                    var params={from:from,to:to,text:text}
-                    $.post("/pandoc",params, function(data, status){
+                text = this.value;
+                if (to !== '' && from !== '') {
+                    var params = {from: from, to: to, text: text}
+                    $.post("/pandoc", params, function (data, status) {
                         $('#results').text(data);
                     });
                 }
@@ -103,28 +103,55 @@
             });
 
             $('#convert').click(function () {
-                alert(from+"  "+ to +"  "+ text.toString())
-                var params={from:from,to:to,text:text}
-                $.post("/pandoc",params, function(data, status){
+                alert(from + "  " + to + "  " + text.toString())
+                var params = {from: from, to: to, text: text}
+                $.post("/pandoc", params, function (data, status) {
 
                     $('#results').text(data);
 
                 });
             });
 
-            $('#link').on('change',function () {
-                alert(this.value)
-                $.get(this.value, function(data, status){
-                    alert(data)
-                    text=data;
+            $('#link').on('change', function () {
+                text='';
+                $('#text').val('');
+                $.get(this.value, function (data, status) {
+
+                    text = data;
                     $('#text').val(data);
                     $('#text').text(data);
                 });
+            });
+            $('#upload').change(function (e) {
+                text='';
+                $('#text').val('');
+
+                var file=e.target.files[0];
+                var formData=new FormData();
+                formData.append("file",file);
+
+                $.ajax({
+                    url:'/upload',
+                    type:'post',
+                    data:formData,
+                    processData:false,
+                    contentType:false,
+                    success:function (data) {
+                        text = data;
+                        $('#text').val(data);
+                        $('#text').text(data);
+                    },
+                    crossDomain:true
+                })
+            });
+            $('#download').click(function () {
+                $.get('/download',function (data) {
+
+                })
             })
-
-
-
         })
+
+
     </script>
 </head>
 
@@ -180,7 +207,11 @@
             </select>
             Inter Link
             <input id="link"/>
-            or <input type="file"/>
+            or
+            <input id="upload" type="file" name="file"></br>
+
+
+
             <br>
             <textarea id="text" maxlength="3000" rows="15"></textarea>
         </div>
@@ -235,6 +266,11 @@
             <pre id="results"></pre>
         </div>
     </div>
+    <form action="download" method="get">
+
+
+    <button  style="  float: right; position: absolute; right: 10%">Download Converted Content</button>
+    </form>
 </div>
 <footer>
     <p class="version">pandoc <span id="version"></span></p>
