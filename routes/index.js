@@ -6,9 +6,11 @@ var args, callback;
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
+    res.render('login', {title: 'Express'});
+});
+router.get('/home', function (req, res, next) {
     res.render('index', {title: 'Express'});
 });
-
 
 router.post('/pandoc', function (req, res, next) {
     var params = req.body
@@ -24,8 +26,8 @@ router.post('/pandoc', function (req, res, next) {
         }
 
         res.send(result);
-        fs.writeFile("./converted-content/content", result, function(err) {
-            if(err) {
+        fs.writeFile("./converted-content/content", result, function (err) {
+            if (err) {
                 return console.log(err);
             }
 
@@ -41,13 +43,13 @@ router.get('/test', function (req, res, next) {
     res.send('<h1>Welcome to </h1><p>Home</p>')
 });
 
-router.post('/upload', function (req, res,next) {
-     res.send(req.files.file.data.toString('utf8'));
+router.post('/upload', function (req, res, next) {
+    res.send(req.files.file.data.toString('utf8'));
 });
 
-router.get('/download', function(req, res,next){
+router.get('/download', function (req, res, next) {
     var path = require('path');
-    res.download(path.join('./converted-content','content'),'content')
+    res.download(path.join('./converted-content', 'content'), 'content')
     /*res.download('./converted-content/content', function(err){
         if(err) {
             // Check if headers have been sent
