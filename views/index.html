@@ -103,7 +103,7 @@
             });
 
             $('#convert').click(function () {
-                alert(from + "  " + to + "  " + text.toString())
+
                 var params = {from: from, to: to, text: text}
                 $.post("/pandoc", params, function (data, status) {
 
@@ -204,6 +204,7 @@
                 <option value="tikiwiki">TikiWiki</option>
                 <option value="twiki">TWiki</option>
                 <option value="vimwiki">Vimwiki</option>
+                <option value="docx">DOCX</option>
             </select>
             Inter Link
             <input id="link"/>
@@ -261,6 +262,7 @@
                 <option value="texinfo">Texinfo</option>
                 <option value="textile">Textile</option>
                 <option value="zimwiki">ZimWiki</option>
+                <option value="docx">DOCX</option>
                 <option value="epub">Epub</option>
             </select>
             <br>
